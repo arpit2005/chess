@@ -1,0 +1,31 @@
+.chess-board {
+    transition: transform 1.5s linear;
+    .row {
+        height: 70px;
+    }
+    .box {
+        width: 70px;
+        height: 70px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        border: 2px solid #dedede;
+    }
+
+    .row:nth-child(2n) {
+        .box:nth-child(2n) {        
+            background-color: #fff;
+        }
+        .box:nth-child(2n+1) {
+            background-color: #adadad;
+        }
+    }
+    .row:nth-child(2n+1) {
+        .box:nth-child(2n) {        
+            background-color: #adadad;
+        }
+        .box:nth-child(2n+1) {
+            background-color: #fff;
+        }
+    }
+}

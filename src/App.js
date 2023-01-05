@@ -1,23 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from 'react';
+import './App.scss';
+import ChessBoard from './components/ChessBoard';
 
 function App() {
+
+  useEffect(() => {
+    const rotateCWBtn = document.querySelector('.chess-screen .chess-controls .rotate-cw-btn')
+    const rotateCCWBtn = document.querySelector('.chess-screen .chess-controls .rotate-ccw-btn')
+    const chessBoard = document.querySelector('.chess-screen .chess-board')
+
+    rotateCWBtn.addEventListener('click', () => {
+      chessBoard.style.transform = `rotate(${180}deg)`
+    })
+
+    rotateCCWBtn.addEventListener('click', () => {
+      chessBoard.style.transform = `rotate(${0}deg)`
+    })
+
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='chess-screen'>
+      <div className='chess-controls'>
+        <div className='rotate-cw-btn'>
+          Rotate CW
+        </div>
+        <div className='rotate-ccw-btn'>
+          Rotate CCW
+        </div>
+      </div>
+      <ChessBoard />
     </div>
   );
 }
