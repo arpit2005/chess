@@ -8,8 +8,8 @@ function ChessBoard() {
     let boardArrayLocal = []
     const [selectedBox, setSelectedBox] = useState('')
     const [selectedPiece, setSelectedPiece] = useState('')
-    const [nextMovesArray, setNextMovesArray] = useState()
-
+    const [nextMovesArray, setNextMovesArray] = useState([])
+    let currentSelected = useRef(false)
 
     useEffect(() => {
         boardArrayLocal = []
@@ -25,8 +25,11 @@ function ChessBoard() {
 
             for (let i = 0; i < chessPieces.length; i++) {
                 chessPieces[i].addEventListener('click', (e) => {
+                    if (currentSelected.current)
+                        return
                     setSelectedBox(e.target.parentNode.id)
                     setSelectedPiece(e.target)
+                    currentSelected.current = true
                     const boxArray = document.querySelectorAll('.chess-board .row .box')
 
                     boxArray.forEach(box => {
@@ -76,7 +79,6 @@ function ChessBoard() {
                             }
                         })
 
-                        console.log(nextMovesArrayLocal)
                         setNextMovesArray(nextMovesArrayLocal)
 
                         boxArray.forEach(box => {
@@ -93,17 +95,18 @@ function ChessBoard() {
         }
     }, [boardArray])
 
-    function setNextMove() {
+    function setNextMove(move) {
         let nextBoxArray = document.querySelectorAll(`.chess-board .row span`)
         let nextBox = null
         const boxArray = document.querySelectorAll('.chess-board .row .box')
+        const childPiecePresent = document.querySelector('.chess-board .row .box img')
 
         boxArray.forEach(box => {
             box.classList.remove('next-move')
         })
 
         nextBoxArray.forEach(box => {
-            if (box.id == nextMovesArray) {
+            if (box.id == move) {
                 nextBox = box
             }
         })
@@ -111,11 +114,13 @@ function ChessBoard() {
         let newSelectedPiece = selectedPiece
         selectedPiece.remove()
 
-        newSelectedPiece.id = `${nextMovesArray}`
+        newSelectedPiece.id = `${move}`
 
         nextBox.appendChild(newSelectedPiece)
+
         setSelectedBox('')
-        setNextMovesArray('')
+        setNextMovesArray([])
+        currentSelected.current = false
 
     }
 
@@ -129,8 +134,11 @@ function ChessBoard() {
                                 return (
                                     <span id={`${rowIndex.toString() + colIndex.toString()}`} className={`box box-${colIndex} ${selectedBox == rowIndex.toString() + colIndex.toString() ? 'selected' : ''}`}
                                         onClick={() => {
-                                            if (nextMovesArray == rowIndex.toString() + colIndex.toString())
-                                                setNextMove()
+                                            nextMovesArray.forEach(move => {
+                                                if (move == rowIndex.toString() + colIndex.toString()) {
+                                                    setNextMove(move)
+                                                }
+                                            })
                                         }}
                                     >
                                         {rowIndex == 1 ? <img src={blackPawn} id={`${rowIndex.toString() + colIndex.toString()}`} className={`piece black pawn`} /> : ''}
