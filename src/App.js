@@ -10,11 +10,19 @@ function App() {
     const chessBoard = document.querySelector('.chess-screen .chess-board')
 
     rotateCWBtn.addEventListener('click', () => {
+      const chessPieces = document.querySelectorAll('.chess-board .box .piece')
+
       chessBoard.style.transform = `rotate(${180}deg)`
+      for (let i = 0; i < chessPieces.length; i++)
+        chessPieces[i].style.transform = `rotateX(180deg)`
     })
 
     rotateCCWBtn.addEventListener('click', () => {
+      const chessPieces = document.querySelectorAll('.chess-board .box .piece')
+
       chessBoard.style.transform = `rotate(${0}deg)`
+      for (let i = 0; i < chessPieces.length; i++)
+        chessPieces[i].style.transform = `rotateX(0deg)`
     })
 
   }, [])
