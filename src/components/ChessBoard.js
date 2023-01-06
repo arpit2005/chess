@@ -24,8 +24,6 @@ function ChessBoard() {
             for (let i = 0; i < chessPieces.length; i++) {
                 chessPieces[i].addEventListener('click', (e) => {
                     setSelectedBox(e.target.parentNode.id)
-                    // console.log(e.target.id)
-
                     if (e.target.classList[1] == 'black' && e.target.classList[2] == 'pawn') {
                         let newMoveRow = null
 
