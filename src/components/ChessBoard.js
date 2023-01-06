@@ -7,6 +7,7 @@ function ChessBoard() {
     const [boardArray, setBoardArray] = useState([])
     let boardArrayLocal = []
     const [selectedBox, setSelectedBox] = useState('')
+    const [nextMovesArray, setNextMovesArray] = useState()
 
     useEffect(() => {
         boardArrayLocal = []
@@ -19,19 +20,28 @@ function ChessBoard() {
     useEffect(() => {
         if (boardArray.length > 0) {
             const chessPieces = document.querySelectorAll('.chess-board .box .piece')
-            // console.log(chessPieces)
 
             for (let i = 0; i < chessPieces.length; i++) {
                 chessPieces[i].addEventListener('click', (e) => {
-                    console.log(e.target)
                     setSelectedBox(e.target.parentNode.id)
+                    // console.log(e.target.id)
+
+                    if (e.target.classList[1] == 'black' && e.target.classList[2] == 'pawn') {
+                        let newMoveRow = null
+
+                        newMoveRow = Number(e.target.id[0]) + 1
+                        setNextMovesArray(newMoveRow.toString() + e.target.id[1].toString())
+                    }
+
+                    if (e.target.classList[1] == 'white' && e.target.classList[2] == 'pawn') {
+                        let newMoveRow = null
+
+                        newMoveRow = Number(e.target.id[0]) - 1
+                        setNextMovesArray(newMoveRow.toString() + e.target.id[1].toString())
+                    }
                 })
             }
 
-            for (let i = 0; i < chessPieces.length; i++) {
-                // console.log(chessPieces[i].id)
-                // console.log(chessPieces[i].classList[2])
-            }
         }
     }, [boardArray])
 
@@ -44,7 +54,7 @@ function ChessBoard() {
                         {
                             boardArray.map((item, colIndex) => {
                                 return (
-                                    <span id={`${rowIndex.toString() + colIndex.toString()}`} className={`box box-${colIndex} ${selectedBox == rowIndex.toString() + colIndex.toString() ? 'selected' : ''}`}>
+                                    <span id={`${rowIndex.toString() + colIndex.toString()}`} className={`box box-${colIndex} ${selectedBox == rowIndex.toString() + colIndex.toString() ? 'selected' : ''} ${nextMovesArray == rowIndex.toString() + colIndex.toString() ? 'next-move' : ''}`}>
                                         {rowIndex == 1 ? <img src={blackPawn} id={`${rowIndex.toString() + colIndex.toString()}`} className={`piece black pawn row-${rowIndex} col-${colIndex}`} /> : ''}
                                         {rowIndex == 6 ? <img src={whitePawn} id={`${rowIndex.toString() + colIndex.toString()}`} className={`piece white pawn row-${rowIndex} col-${colIndex}`} /> : ''}
 

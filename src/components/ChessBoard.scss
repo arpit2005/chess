@@ -11,12 +11,16 @@
         align-items: center;
         border: 2px solid #dedede;
         padding: 8px;
-        cursor: pointer;
         img {
             max-width: 100%;
+            cursor: pointer;
         }
         &.selected {
             border-color: green;
+        }
+        &.next-move {
+            border-color: crimson;
+            cursor: pointer;
         }
     }
 
