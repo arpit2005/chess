@@ -7,7 +7,9 @@ function ChessBoard() {
     const [boardArray, setBoardArray] = useState([])
     let boardArrayLocal = []
     const [selectedBox, setSelectedBox] = useState('')
+    const [selectedPiece, setSelectedPiece] = useState('')
     const [nextMovesArray, setNextMovesArray] = useState()
+
 
     useEffect(() => {
         boardArrayLocal = []
@@ -24,6 +26,8 @@ function ChessBoard() {
             for (let i = 0; i < chessPieces.length; i++) {
                 chessPieces[i].addEventListener('click', (e) => {
                     setSelectedBox(e.target.parentNode.id)
+                    setSelectedPiece(e.target)
+
                     if (e.target.classList[1] == 'black' && e.target.classList[2] == 'pawn') {
                         let newMoveRow = null
 
@@ -43,6 +47,27 @@ function ChessBoard() {
         }
     }, [boardArray])
 
+    function setNextMove() {
+        let nextBoxArray = document.querySelectorAll(`.chess-board .row span`)
+        let nextBox = null
+
+        nextBoxArray.forEach(box => {
+            if (box.id == nextMovesArray) {
+                nextBox = box
+            }
+        })
+
+        let newSelectedPiece = selectedPiece
+        console.log(selectedPiece)
+
+        selectedPiece.remove()
+        nextBox.appendChild(newSelectedPiece)
+
+
+
+        console.log(nextBox)
+
+    }
 
     return (
         <div className='chess-board'>
@@ -52,9 +77,14 @@ function ChessBoard() {
                         {
                             boardArray.map((item, colIndex) => {
                                 return (
-                                    <span id={`${rowIndex.toString() + colIndex.toString()}`} className={`box box-${colIndex} ${selectedBox == rowIndex.toString() + colIndex.toString() ? 'selected' : ''} ${nextMovesArray == rowIndex.toString() + colIndex.toString() ? 'next-move' : ''}`}>
-                                        {rowIndex == 1 ? <img src={blackPawn} id={`${rowIndex.toString() + colIndex.toString()}`} className={`piece black pawn row-${rowIndex} col-${colIndex}`} /> : ''}
-                                        {rowIndex == 6 ? <img src={whitePawn} id={`${rowIndex.toString() + colIndex.toString()}`} className={`piece white pawn row-${rowIndex} col-${colIndex}`} /> : ''}
+                                    <span id={`${rowIndex.toString() + colIndex.toString()}`} className={`box box-${colIndex} ${selectedBox == rowIndex.toString() + colIndex.toString() ? 'selected' : ''} ${nextMovesArray == rowIndex.toString() + colIndex.toString() ? 'next-move' : ''}`}
+                                        onClick={() => {
+                                            if (nextMovesArray == rowIndex.toString() + colIndex.toString())
+                                                setNextMove()
+                                        }}
+                                    >
+                                        {rowIndex == 1 ? <img src={blackPawn} id={`${rowIndex.toString() + colIndex.toString()}`} className={`piece black pawn`} /> : ''}
+                                        {rowIndex == 6 ? <img src={whitePawn} id={`${rowIndex.toString() + colIndex.toString()}`} className={`piece white pawn`} /> : ''}
 
                                     </span>
                                 )

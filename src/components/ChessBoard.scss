@@ -1,7 +1,8 @@
 .chess-board {
-    transition: transform 1.5s linear;
+    transition: transform 1s linear;
     .row {
         height: 70px;
+        display: flex;
     }
     .box {
         width: 70px;
