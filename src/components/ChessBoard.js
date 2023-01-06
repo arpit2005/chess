@@ -27,19 +27,65 @@ function ChessBoard() {
                 chessPieces[i].addEventListener('click', (e) => {
                     setSelectedBox(e.target.parentNode.id)
                     setSelectedPiece(e.target)
+                    const boxArray = document.querySelectorAll('.chess-board .row .box')
+
+                    boxArray.forEach(box => {
+                        box.classList.remove('next-move')
+                    })
 
                     if (e.target.classList[1] == 'black' && e.target.classList[2] == 'pawn') {
                         let newMoveRow = null
+                        let newMoveCol = null
+                        let nextMovesArrayLocal = []
+                        const whitePiecesArray = document.querySelectorAll('.chess-board .piece.white')
+
 
                         newMoveRow = Number(e.target.id[0]) + 1
-                        setNextMovesArray(newMoveRow.toString() + e.target.id[1].toString())
+                        nextMovesArrayLocal.push(newMoveRow.toString() + e.target.id[1].toString())
+
+                        whitePiecesArray.forEach(piece => {
+                            if (piece.id == Number(nextMovesArrayLocal[0]) + 1 || piece.id == Number(nextMovesArrayLocal[0]) - 1) {
+                                nextMovesArrayLocal.push(piece.id)
+                            }
+                        })
+
+                        setNextMovesArray(nextMovesArrayLocal)
+
+                        boxArray.forEach(box => {
+                            nextMovesArrayLocal.forEach(move => {
+                                if (move == box.id) {
+                                    box.classList.add('next-move')
+                                }
+                            })
+                        })
                     }
 
                     if (e.target.classList[1] == 'white' && e.target.classList[2] == 'pawn') {
                         let newMoveRow = null
+                        let newMoveCol = null
+                        let nextMovesArrayLocal = []
+                        const blackPiecesArray = document.querySelectorAll('.chess-board .piece.black')
 
                         newMoveRow = Number(e.target.id[0]) - 1
-                        setNextMovesArray(newMoveRow.toString() + e.target.id[1].toString())
+
+                        nextMovesArrayLocal.push(newMoveRow.toString() + e.target.id[1].toString())
+
+                        blackPiecesArray.forEach(piece => {
+                            if (piece.id == Number(nextMovesArrayLocal[0]) + 1 || piece.id == Number(nextMovesArrayLocal[0]) - 1) {
+                                nextMovesArrayLocal.push(piece.id)
+                            }
+                        })
+
+                        console.log(nextMovesArrayLocal)
+                        setNextMovesArray(nextMovesArrayLocal)
+
+                        boxArray.forEach(box => {
+                            nextMovesArrayLocal.forEach(move => {
+                                if (move == box.id) {
+                                    box.classList.add('next-move')
+                                }
+                            })
+                        })
                     }
                 })
             }
@@ -50,6 +96,11 @@ function ChessBoard() {
     function setNextMove() {
         let nextBoxArray = document.querySelectorAll(`.chess-board .row span`)
         let nextBox = null
+        const boxArray = document.querySelectorAll('.chess-board .row .box')
+
+        boxArray.forEach(box => {
+            box.classList.remove('next-move')
+        })
 
         nextBoxArray.forEach(box => {
             if (box.id == nextMovesArray) {
@@ -76,7 +127,7 @@ function ChessBoard() {
                         {
                             boardArray.map((item, colIndex) => {
                                 return (
-                                    <span id={`${rowIndex.toString() + colIndex.toString()}`} className={`box box-${colIndex} ${selectedBox == rowIndex.toString() + colIndex.toString() ? 'selected' : ''} ${nextMovesArray == rowIndex.toString() + colIndex.toString() ? 'next-move' : ''}`}
+                                    <span id={`${rowIndex.toString() + colIndex.toString()}`} className={`box box-${colIndex} ${selectedBox == rowIndex.toString() + colIndex.toString() ? 'selected' : ''}`}
                                         onClick={() => {
                                             if (nextMovesArray == rowIndex.toString() + colIndex.toString())
                                                 setNextMove()
