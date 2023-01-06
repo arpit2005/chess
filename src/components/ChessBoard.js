@@ -10,6 +10,7 @@ function ChessBoard() {
     const [selectedPiece, setSelectedPiece] = useState('')
     const [nextMovesArray, setNextMovesArray] = useState([])
     let currentSelected = useRef(false)
+    let selectedMove = useRef(null)
 
     useEffect(() => {
         boardArrayLocal = []
@@ -25,8 +26,10 @@ function ChessBoard() {
 
             for (let i = 0; i < chessPieces.length; i++) {
                 chessPieces[i].addEventListener('click', (e) => {
-                    if (currentSelected.current)
+                    if (currentSelected.current) {
                         return
+                    }
+
                     setSelectedBox(e.target.parentNode.id)
                     setSelectedPiece(e.target)
                     currentSelected.current = true
