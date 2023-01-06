@@ -58,14 +58,8 @@ function ChessBoard() {
         })
 
         let newSelectedPiece = selectedPiece
-        console.log(selectedPiece)
-
         selectedPiece.remove()
         nextBox.appendChild(newSelectedPiece)
-
-
-
-        console.log(nextBox)
 
     }
 
