@@ -59,7 +59,12 @@ function ChessBoard() {
 
         let newSelectedPiece = selectedPiece
         selectedPiece.remove()
+
+        newSelectedPiece.id = `${nextMovesArray}`
+
         nextBox.appendChild(newSelectedPiece)
+        setSelectedBox('')
+        setNextMovesArray('')
 
     }
 
