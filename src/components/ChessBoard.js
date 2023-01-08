@@ -14,7 +14,7 @@ import whiteBishop from '../assets/white-bishop.svg'
 import whiteKing from '../assets/white-king.svg'
 import whiteQueen from '../assets/white-queen.svg'
 
-function ChessBoard() {
+function ChessBoard({ className, style }) {
     const [boardArray, setBoardArray] = useState([])
     const [selectedBox, setSelectedBox] = useState('')
     const [selectedPiece, setSelectedPiece] = useState('')
@@ -305,7 +305,7 @@ function ChessBoard() {
     return (
         <>
             <div className='clr-btn' onClick={reset}>Clear</div>
-            <div className='chess-board'>
+            <div className={`chess-board ${className ? className : ''}`} style={{ ...style }}>
                 {boardArray.map((i, rowIndex) => {
                     return (
                         <div className={`row row-${rowIndex}`}>

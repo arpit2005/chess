@@ -1,43 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.scss';
 import ChessBoard from './components/ChessBoard';
 
 function App() {
+  const [isRotated, setIsRotated] = useState(false)
 
   useEffect(() => {
-    const rotateCWBtn = document.querySelector('.chess-screen .chess-controls .rotate-cw-btn')
-    const rotateCCWBtn = document.querySelector('.chess-screen .chess-controls .rotate-ccw-btn')
-    const chessBoard = document.querySelector('.chess-screen .chess-board')
+    const chessPieces = document.querySelectorAll('.chess-board .box .piece')
 
-    rotateCWBtn.addEventListener('click', () => {
-      const chessPieces = document.querySelectorAll('.chess-board .box .piece')
+    for (let i = 0; i < chessPieces.length; i++)
+      chessPieces[i].style.transform = `rotateX(${isRotated ? '180' : '0'}deg)`
 
-      chessBoard.style.transform = `rotate(${180}deg)`
-      for (let i = 0; i < chessPieces.length; i++)
-        chessPieces[i].style.transform = `rotateX(180deg)`
-    })
-
-    rotateCCWBtn.addEventListener('click', () => {
-      const chessPieces = document.querySelectorAll('.chess-board .box .piece')
-
-      chessBoard.style.transform = `rotate(${0}deg)`
-      for (let i = 0; i < chessPieces.length; i++)
-        chessPieces[i].style.transform = `rotateX(0deg)`
-    })
-
-  }, [])
+  }, [isRotated])
 
   return (
     <div className='chess-screen'>
       <div className='chess-controls'>
-        <div className='rotate-cw-btn'>
-          Rotate CW
-        </div>
-        <div className='rotate-ccw-btn'>
-          Rotate CCW
+        <div className='rotate-ccw-btn' onClick={() => setIsRotated(!isRotated)}>
+          {isRotated ? 'Rotate CCW' : 'Rotate CW'}
         </div>
       </div>
-      <ChessBoard />
+      <ChessBoard style={{ transform: isRotated ? 'rotate(180deg)' : 'rotate(0deg)' }} />
     </div>
   );
 }
