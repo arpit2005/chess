@@ -242,7 +242,7 @@ function ChessBoard() {
                 {whiteOutPiecesArray.map(piece => {
                     return (
                         <span className='piece-box'>
-                            <img src={blackPawn} id={`${piece.pieceId}`} className={`piece ${piece.pieceColor} ${piece.pieceType}`} />
+                            <img src={whitePawn} id={`${piece.pieceId}`} className={`piece ${piece.pieceColor} ${piece.pieceType}`} />
                         </span>
                     )
                 })}
