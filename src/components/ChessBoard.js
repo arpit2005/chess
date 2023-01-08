@@ -48,12 +48,26 @@ function ChessBoard() {
                                     setWhiteOutPiecesArray(whiteOutPiecesArrayLocal)
                                     e.target.remove()
 
+                                    let nextBoxArray = document.querySelectorAll(`.chess-board .row span`)
+                                    let nextBox = null
+                                    const boxArray = document.querySelectorAll('.chess-board .row .box')
 
-                                    console.log(selectedPieceRef.current)
+                                    boxArray.forEach(box => {
+                                        box.classList.remove('next-move')
+                                    })
 
+                                    nextBoxArray.forEach(box => {
+                                        if (box.id == e.target.id) {
+                                            nextBox = box
+                                        }
+                                    })
+
+                                    let newSelectedPiece = selectedPieceRef.current
                                     selectedPieceRef.current.remove()
+                                    newSelectedPiece.id = `${e.target.id}`
+                                    nextBox.appendChild(newSelectedPiece)
 
-                                    // reset()
+                                    reset()
                                 }
                             })
                         }
