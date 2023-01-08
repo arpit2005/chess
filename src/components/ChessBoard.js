@@ -48,26 +48,7 @@ function ChessBoard() {
                                     setWhiteOutPiecesArray(whiteOutPiecesArrayLocal)
                                     e.target.remove()
 
-                                    let nextBoxArray = document.querySelectorAll(`.chess-board .row span`)
-                                    let nextBox = null
-                                    const boxArray = document.querySelectorAll('.chess-board .row .box')
-
-                                    boxArray.forEach(box => {
-                                        box.classList.remove('next-move')
-                                    })
-
-                                    nextBoxArray.forEach(box => {
-                                        if (box.id == e.target.id) {
-                                            nextBox = box
-                                        }
-                                    })
-
-                                    let newSelectedPiece = selectedPieceRef.current
-                                    selectedPieceRef.current.remove()
-                                    newSelectedPiece.id = `${e.target.id}`
-                                    nextBox.appendChild(newSelectedPiece)
-
-                                    reset()
+                                    knockPiece(e)
                                 }
                             })
                         }
@@ -196,6 +177,37 @@ function ChessBoard() {
 
     }
 
+    function clearNextMove() {
+        const boxArray = document.querySelectorAll('.chess-board .row .box')
+
+        boxArray.forEach(box => {
+            box.classList.remove('next-move')
+        })
+    }
+
+    function knockPiece(e) {
+        let nextBoxArray = document.querySelectorAll(`.chess-board .row span`)
+        let nextBox = null
+        const boxArray = document.querySelectorAll('.chess-board .row .box')
+
+        boxArray.forEach(box => {
+            box.classList.remove('next-move')
+        })
+
+        nextBoxArray.forEach(box => {
+            if (box.id == e.target.id) {
+                nextBox = box
+            }
+        })
+
+        let newSelectedPiece = selectedPieceRef.current
+        selectedPieceRef.current.remove()
+        newSelectedPiece.id = `${e.target.id}`
+        nextBox.appendChild(newSelectedPiece)
+
+        reset()
+    }
+
     function setNextMove(move) {
         let nextBoxArray = document.querySelectorAll(`.chess-board .row span`)
         let nextBox = null
@@ -213,17 +225,10 @@ function ChessBoard() {
 
         let newSelectedPiece = selectedPiece
         selectedPiece.remove()
-
         newSelectedPiece.id = `${move}`
-
         nextBox.appendChild(newSelectedPiece)
 
-        setSelectedBox('')
-        selectedBoxRef.current = null
-        selectedPieceRef.current = null
-        setSelectedPiece('')
-        setNextMovesArray([])
-        currentSelected.current = false
+        reset()
 
     }
 
