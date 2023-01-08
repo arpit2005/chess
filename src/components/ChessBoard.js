@@ -10,6 +10,7 @@ function ChessBoard() {
     const [selectedPiece, setSelectedPiece] = useState('')
     const [nextMovesArray, setNextMovesArray] = useState([])
     let currentSelected = useRef(false)
+    let currentPiece = useRef(null)
     let selectedMove = useRef(null)
 
     useEffect(() => {
@@ -41,16 +42,31 @@ function ChessBoard() {
 
                     if (e.target.classList[1] == 'black' && e.target.classList[2] == 'pawn') {
                         let newMoveRow = null
-                        let newMoveCol = null
                         let nextMovesArrayLocal = []
                         const whitePiecesArray = document.querySelectorAll('.chess-board .piece.white')
-
+                        const blackPiecesArray = document.querySelectorAll('.chess-board .piece.black')
 
                         newMoveRow = Number(e.target.id[0]) + 1
-                        nextMovesArrayLocal.push(newMoveRow.toString() + e.target.id[1].toString())
+
+                        let forwardPiece = false
+
+                        blackPiecesArray.forEach(piece => {
+                            if (piece.id == Number(newMoveRow.toString() + e.target.id[1].toString())) {
+                                forwardPiece = true
+                            }
+                        })
 
                         whitePiecesArray.forEach(piece => {
-                            if (piece.id == Number(nextMovesArrayLocal[0]) + 1 || piece.id == Number(nextMovesArrayLocal[0]) - 1) {
+                            if (piece.id == Number(newMoveRow.toString() + e.target.id[1].toString())) {
+                                forwardPiece = true
+                            }
+                        })
+
+                        if (!forwardPiece)
+                            nextMovesArrayLocal.push(newMoveRow.toString() + e.target.id[1].toString())
+
+                        whitePiecesArray.forEach(piece => {
+                            if (piece.id == Number(newMoveRow.toString() + e.target.id[1].toString()) + 1 || piece.id == Number(newMoveRow.toString() + e.target.id[1].toString()) - 1) {
                                 nextMovesArrayLocal.push(piece.id)
                             }
                         })
@@ -68,16 +84,31 @@ function ChessBoard() {
 
                     if (e.target.classList[1] == 'white' && e.target.classList[2] == 'pawn') {
                         let newMoveRow = null
-                        let newMoveCol = null
                         let nextMovesArrayLocal = []
                         const blackPiecesArray = document.querySelectorAll('.chess-board .piece.black')
+                        const whitePiecesArray = document.querySelectorAll('.chess-board .piece.white')
 
                         newMoveRow = Number(e.target.id[0]) - 1
 
-                        nextMovesArrayLocal.push(newMoveRow.toString() + e.target.id[1].toString())
+                        let forwardPiece = false
 
                         blackPiecesArray.forEach(piece => {
-                            if (piece.id == Number(nextMovesArrayLocal[0]) + 1 || piece.id == Number(nextMovesArrayLocal[0]) - 1) {
+                            if (piece.id == Number(newMoveRow.toString() + e.target.id[1].toString())) {
+                                forwardPiece = true
+                            }
+                        })
+
+                        whitePiecesArray.forEach(piece => {
+                            if (piece.id == Number(newMoveRow.toString() + e.target.id[1].toString())) {
+                                forwardPiece = true
+                            }
+                        })
+
+                        if (!forwardPiece)
+                            nextMovesArrayLocal.push(newMoveRow.toString() + e.target.id[1].toString())
+
+                        blackPiecesArray.forEach(piece => {
+                            if (piece.id == Number(newMoveRow.toString() + e.target.id[1].toString()) + 1 || piece.id == Number(newMoveRow.toString() + e.target.id[1].toString()) - 1) {
                                 nextMovesArrayLocal.push(piece.id)
                             }
                         })
@@ -98,11 +129,24 @@ function ChessBoard() {
         }
     }, [boardArray])
 
+    function reset() {
+        const boxArray = document.querySelectorAll('.chess-board .row .box')
+
+        boxArray.forEach(box => {
+            box.classList.remove('next-move')
+        })
+
+        setSelectedBox('')
+        setSelectedPiece('')
+        setNextMovesArray([])
+        currentSelected.current = false
+
+    }
+
     function setNextMove(move) {
         let nextBoxArray = document.querySelectorAll(`.chess-board .row span`)
         let nextBox = null
         const boxArray = document.querySelectorAll('.chess-board .row .box')
-        const childPiecePresent = document.querySelector('.chess-board .row .box img')
 
         boxArray.forEach(box => {
             box.classList.remove('next-move')
