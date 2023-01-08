@@ -13,7 +13,9 @@ function ChessBoard() {
 
     let boardArrayLocal = []
     let currentSelected = useRef(false)
+    let selectedPieceRef = useRef(false)
     let currentPieceColor = useRef(null)
+    let selectedBoxRef = useRef(null)
     let nextMovesArrayRef = useRef([])
 
     useEffect(() => {
@@ -42,12 +44,17 @@ function ChessBoard() {
                             nextMovesArrayRef.current?.length > 0 && nextMovesArrayRef.current.forEach(move => {
                                 if (move == e.target.id) {
                                     if (e.target.classList[1] == "black" && currentPieceColor.current == "white") {
-                                        console.log('black at front')
-
+                                        blackOutPiecesArrayLocal.push({ pieceId: e.target.id, pieceColor: 'black', pieceType: e.target.classList[2] })
                                     }
                                     if (e.target.classList[1] == "white" && currentPieceColor.current == "black") {
-                                        console.log('white at front')
+                                        whiteOutPiecesArrayLocal.push({ pieceId: e.target.id, pieceColor: 'white', pieceType: e.target.classList[2] })
                                     }
+                                    setBlackOutPiecesArray(blackOutPiecesArrayLocal)
+                                    setWhiteOutPiecesArray(whiteOutPiecesArrayLocal)
+                                    e.target.remove()
+
+                                    console.log(selectedPieceRef.current)
+                                    console.log(selectedBoxRef.current)
                                 }
                             })
                         }
@@ -55,8 +62,12 @@ function ChessBoard() {
                     }
 
                     setSelectedBox(e.target.parentNode.id)
+                    selectedBoxRef.current = e.target.parentNode.id
+
                     setSelectedPiece(e.target)
+                    selectedPieceRef.current = e.target
                     currentSelected.current = true
+
                     const boxArray = document.querySelectorAll('.chess-board .row .box')
 
                     boxArray.forEach(box => {
@@ -193,39 +204,61 @@ function ChessBoard() {
         nextBox.appendChild(newSelectedPiece)
 
         setSelectedBox('')
+        selectedBoxRef.current = null
+        selectedPieceRef.current = null
         setNextMovesArray([])
         currentSelected.current = false
 
     }
 
     return (
-        <div className='chess-board'>
-            {boardArray.map((i, rowIndex) => {
-                return (
-                    <div className={`row row-${rowIndex}`}>
-                        {
-                            boardArray.map((item, colIndex) => {
-                                return (
-                                    <span id={`${rowIndex.toString() + colIndex.toString()}`} className={`box box-${colIndex} ${selectedBox == rowIndex.toString() + colIndex.toString() ? 'selected' : ''}`}
-                                        onClick={() => {
-                                            nextMovesArray.forEach(move => {
-                                                if (move == rowIndex.toString() + colIndex.toString()) {
-                                                    setNextMove(move)
-                                                }
-                                            })
-                                        }}
-                                    >
-                                        {rowIndex == 1 ? <img src={blackPawn} id={`${rowIndex.toString() + colIndex.toString()}`} className={`piece black pawn`} /> : ''}
-                                        {rowIndex == 6 ? <img src={whitePawn} id={`${rowIndex.toString() + colIndex.toString()}`} className={`piece white pawn`} /> : ''}
+        <>
+            <div className='chess-board'>
+                {boardArray.map((i, rowIndex) => {
+                    return (
+                        <div className={`row row-${rowIndex}`}>
+                            {
+                                boardArray.map((item, colIndex) => {
+                                    return (
+                                        <span id={`${rowIndex.toString() + colIndex.toString()}`} className={`box box-${colIndex} ${selectedBox == rowIndex.toString() + colIndex.toString() ? 'selected' : ''}`}
+                                            onClick={() => {
+                                                nextMovesArray.forEach(move => {
+                                                    if (move == rowIndex.toString() + colIndex.toString()) {
+                                                        setNextMove(move)
+                                                    }
+                                                })
+                                            }}
+                                        >
+                                            {rowIndex == 1 ? <img src={blackPawn} id={`${rowIndex.toString() + colIndex.toString()}`} className={`piece black pawn`} /> : ''}
+                                            {rowIndex == 6 ? <img src={whitePawn} id={`${rowIndex.toString() + colIndex.toString()}`} className={`piece white pawn`} /> : ''}
 
-                                    </span>
-                                )
-                            })
-                        }
-                    </div>
-                )
-            })}
-        </div>
+                                        </span>
+                                    )
+                                })
+                            }
+                        </div>
+                    )
+                })}
+            </div>
+            <div className='white-out-pieces'>
+                {whiteOutPiecesArray.map(piece => {
+                    return (
+                        <span className='piece-box'>
+                            <img src={blackPawn} id={`${piece.pieceId}`} className={`piece ${piece.pieceColor} ${piece.pieceType}`} />
+                        </span>
+                    )
+                })}
+            </div>
+            <div className='black-out-pieces'>
+                {blackOutPiecesArray.map(piece => {
+                    return (
+                        <span className='piece-box'>
+                            <img src={blackPawn} id={`${piece.pieceId}`} className={`piece ${piece.pieceColor} ${piece.pieceType}`} />
+                        </span>
+                    )
+                })}
+            </div>
+        </>
     )
 }
 

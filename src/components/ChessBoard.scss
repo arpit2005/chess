@@ -42,3 +42,50 @@
         }
     }
 }
+
+.chess-screen {
+    display: flex;
+    position: relative;
+}
+
+.white-out-pieces {
+    position: absolute;
+    left: -190px;
+    // height: 100%;
+    width: 145px;
+    border: 1px solid #adadad;
+    display: flex;
+    flex-wrap: wrap;
+    .piece-box {
+        width: 70px;
+        height: 70px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        padding: 8px;
+        img {
+            max-width: 100%;
+        }
+    }
+}
+
+.black-out-pieces {
+    position: absolute;
+    right: -190px;
+    // height: 100%;
+    width: 145px;
+    border: 1px solid #adadad;
+    display: flex;
+    flex-wrap: wrap;
+    .piece-box {
+        width: 70px;
+        height: 70px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        padding: 8px;
+        img {
+            max-width: 100%;
+        }
+    }
+}
