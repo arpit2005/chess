@@ -1,7 +1,18 @@
 import React, { useEffect, useState, useRef } from 'react'
 import './ChessBoard.scss'
 import blackPawn from '../assets/black-pawn.svg'
+import blackRook from '../assets/black-rook.svg'
+import blackKnight from '../assets/black-knight.svg'
+import blackBishop from '../assets/black-bishop.svg'
+import blackKing from '../assets/black-king.svg'
+import blackQueen from '../assets/black-queen.svg'
+
 import whitePawn from '../assets/white-pawn.svg'
+import whiteRook from '../assets/white-rook.svg'
+import whiteKnight from '../assets/white-knight.svg'
+import whiteBishop from '../assets/white-bishop.svg'
+import whiteKing from '../assets/white-king.svg'
+import whiteQueen from '../assets/white-queen.svg'
 
 function ChessBoard() {
     const [boardArray, setBoardArray] = useState([])
@@ -17,6 +28,77 @@ function ChessBoard() {
     let currentPieceColor = useRef(null)
     let selectedBoxRef = useRef(null)
     let nextMovesArrayRef = useRef([])
+
+    let allBlackPiecesArray = [
+        {
+            type: 'rook',
+            src: blackRook
+        },
+        {
+            type: 'knight',
+            src: blackKnight
+        },
+        {
+            type: 'bishop',
+            src: blackBishop
+        },
+        {
+            type: 'queen',
+            src: blackQueen
+        },
+        {
+            type: 'king',
+            src: blackKing
+        },
+        {
+            type: 'bishop',
+            src: blackBishop
+        },
+        {
+            type: 'knight',
+            src: blackKnight
+        },
+        {
+            type: 'rook',
+            src: blackRook
+        }
+    ]
+
+    let allWhitePiecesArray = [
+        {
+            type: 'rook',
+            src: whiteRook
+        },
+        {
+            type: 'knight',
+            src: whiteKnight
+        },
+        {
+            type: 'bishop',
+            src: whiteBishop
+        },
+        {
+            type: 'king',
+            src: whiteKing
+        },
+        {
+            type: 'queen',
+            src: whiteQueen
+        },
+        {
+            type: 'bishop',
+            src: whiteBishop
+        },
+        {
+            type: 'knight',
+            src: whiteKnight
+        },
+        {
+            type: 'rook',
+            src: whiteRook
+        }
+    ]
+
 
     useEffect(() => {
         boardArrayLocal = []
@@ -239,9 +321,24 @@ function ChessBoard() {
                                                 })
                                             }}
                                         >
+                                            {
+                                                rowIndex == 0 && allBlackPiecesArray.map((piece, index) => {
+                                                    return (
+                                                        colIndex == index &&
+                                                        <img src={piece.src} id={`${rowIndex.toString() + colIndex.toString()}`} className={`piece black ${piece.type}`} />
+                                                    )
+                                                })
+                                            }
                                             {rowIndex == 1 ? <img src={blackPawn} id={`${rowIndex.toString() + colIndex.toString()}`} className={`piece black pawn`} /> : ''}
                                             {rowIndex == 6 ? <img src={whitePawn} id={`${rowIndex.toString() + colIndex.toString()}`} className={`piece white pawn`} /> : ''}
-
+                                            {
+                                                rowIndex == 7 && allWhitePiecesArray.map((piece, index) => {
+                                                    return (
+                                                        colIndex == index &&
+                                                        <img src={piece.src} id={`${rowIndex.toString() + colIndex.toString()}`} className={`piece black ${piece.type}`} />
+                                                    )
+                                                })
+                                            }
                                         </span>
                                     )
                                 })
