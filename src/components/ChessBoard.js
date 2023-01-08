@@ -40,9 +40,12 @@ function ChessBoard() {
                         // currenPieceColor
                         // e.target.classList[1] for color
 
+
                         if (e.target) {
                             nextMovesArrayRef.current?.length > 0 && nextMovesArrayRef.current.forEach(move => {
                                 if (move == e.target.id) {
+                                    const boxArray = document.querySelectorAll('.chess-board .row .box')
+
                                     if (e.target.classList[1] == "black" && currentPieceColor.current == "white") {
                                         blackOutPiecesArrayLocal.push({ pieceId: e.target.id, pieceColor: 'black', pieceType: e.target.classList[2] })
                                     }
@@ -53,8 +56,17 @@ function ChessBoard() {
                                     setWhiteOutPiecesArray(whiteOutPiecesArrayLocal)
                                     e.target.remove()
 
-                                    console.log(selectedPieceRef.current)
-                                    console.log(selectedBoxRef.current)
+                                    setSelectedBox('')
+                                    selectedBoxRef.current = null
+                                    selectedPieceRef.current = null
+                                    setSelectedPiece('')
+                                    setNextMovesArray([])
+                                    currentSelected.current = false
+
+                                    boxArray.forEach(box => {
+                                        box.classList.remove('next-move')
+                                    })
+
                                 }
                             })
                         }
@@ -175,6 +187,8 @@ function ChessBoard() {
         })
 
         setSelectedBox('')
+        selectedBoxRef.current = null
+        selectedPieceRef.current = null
         setSelectedPiece('')
         setNextMovesArray([])
         currentSelected.current = false
@@ -206,6 +220,7 @@ function ChessBoard() {
         setSelectedBox('')
         selectedBoxRef.current = null
         selectedPieceRef.current = null
+        setSelectedPiece('')
         setNextMovesArray([])
         currentSelected.current = false
 
@@ -213,6 +228,7 @@ function ChessBoard() {
 
     return (
         <>
+            <div className='clr-btn' onClick={reset}>Clear</div>
             <div className='chess-board'>
                 {boardArray.map((i, rowIndex) => {
                     return (
