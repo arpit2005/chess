@@ -5,13 +5,16 @@ import whitePawn from '../assets/white-pawn.svg'
 
 function ChessBoard() {
     const [boardArray, setBoardArray] = useState([])
-    let boardArrayLocal = []
     const [selectedBox, setSelectedBox] = useState('')
     const [selectedPiece, setSelectedPiece] = useState('')
     const [nextMovesArray, setNextMovesArray] = useState([])
+    const [blackOutPiecesArray, setBlackOutPiecesArray] = useState([])
+    const [whiteOutPiecesArray, setWhiteOutPiecesArray] = useState([])
+
+    let boardArrayLocal = []
     let currentSelected = useRef(false)
-    let currentPiece = useRef(null)
-    let selectedMove = useRef(null)
+    let currentPieceColor = useRef(null)
+    let nextMovesArrayRef = useRef([])
 
     useEffect(() => {
         boardArrayLocal = []
@@ -24,10 +27,30 @@ function ChessBoard() {
     useEffect(() => {
         if (boardArray.length > 0) {
             const chessPieces = document.querySelectorAll('.chess-board .box .piece')
+            let blackOutPiecesArrayLocal = []
+            let whiteOutPiecesArrayLocal = []
 
             for (let i = 0; i < chessPieces.length; i++) {
                 chessPieces[i].addEventListener('click', (e) => {
                     if (currentSelected.current) {
+                        // nextMovesArrayRef
+                        // e.target.id
+                        // currenPieceColor
+                        // e.target.classList[1] for color
+
+                        if (e.target) {
+                            nextMovesArrayRef.current?.length > 0 && nextMovesArrayRef.current.forEach(move => {
+                                if (move == e.target.id) {
+                                    if (e.target.classList[1] == "black" && currentPieceColor.current == "white") {
+                                        console.log('black at front')
+
+                                    }
+                                    if (e.target.classList[1] == "white" && currentPieceColor.current == "black") {
+                                        console.log('white at front')
+                                    }
+                                }
+                            })
+                        }
                         return
                     }
 
@@ -41,6 +64,7 @@ function ChessBoard() {
                     })
 
                     if (e.target.classList[1] == 'black' && e.target.classList[2] == 'pawn') {
+                        currentPieceColor.current = 'black'
                         let newMoveRow = null
                         let nextMovesArrayLocal = []
                         const whitePiecesArray = document.querySelectorAll('.chess-board .piece.white')
@@ -72,6 +96,7 @@ function ChessBoard() {
                         })
 
                         setNextMovesArray(nextMovesArrayLocal)
+                        nextMovesArrayRef.current = nextMovesArrayLocal
 
                         boxArray.forEach(box => {
                             nextMovesArrayLocal.forEach(move => {
@@ -83,6 +108,7 @@ function ChessBoard() {
                     }
 
                     if (e.target.classList[1] == 'white' && e.target.classList[2] == 'pawn') {
+                        currentPieceColor.current = 'white'
                         let newMoveRow = null
                         let nextMovesArrayLocal = []
                         const blackPiecesArray = document.querySelectorAll('.chess-board .piece.black')
@@ -114,6 +140,7 @@ function ChessBoard() {
                         })
 
                         setNextMovesArray(nextMovesArrayLocal)
+                        nextMovesArrayRef.current = nextMovesArrayLocal
 
                         boxArray.forEach(box => {
                             nextMovesArrayLocal.forEach(move => {
