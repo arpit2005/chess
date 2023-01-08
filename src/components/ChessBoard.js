@@ -162,19 +162,13 @@ function ChessBoard() {
     }, [boardArray])
 
     function reset() {
-        const boxArray = document.querySelectorAll('.chess-board .row .box')
-
-        boxArray.forEach(box => {
-            box.classList.remove('next-move')
-        })
-
+        clearNextMove()
         setSelectedBox('')
         selectedBoxRef.current = null
         selectedPieceRef.current = null
         setSelectedPiece('')
         setNextMovesArray([])
         currentSelected.current = false
-
     }
 
     function clearNextMove() {
@@ -188,11 +182,8 @@ function ChessBoard() {
     function knockPiece(e) {
         let nextBoxArray = document.querySelectorAll(`.chess-board .row span`)
         let nextBox = null
-        const boxArray = document.querySelectorAll('.chess-board .row .box')
 
-        boxArray.forEach(box => {
-            box.classList.remove('next-move')
-        })
+        clearNextMove()
 
         nextBoxArray.forEach(box => {
             if (box.id == e.target.id) {
@@ -211,11 +202,8 @@ function ChessBoard() {
     function setNextMove(move) {
         let nextBoxArray = document.querySelectorAll(`.chess-board .row span`)
         let nextBox = null
-        const boxArray = document.querySelectorAll('.chess-board .row .box')
 
-        boxArray.forEach(box => {
-            box.classList.remove('next-move')
-        })
+        clearNextMove()
 
         nextBoxArray.forEach(box => {
             if (box.id == move) {
