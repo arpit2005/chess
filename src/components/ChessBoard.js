@@ -48,7 +48,12 @@ function ChessBoard() {
                                     setWhiteOutPiecesArray(whiteOutPiecesArrayLocal)
                                     e.target.remove()
 
-                                    reset()
+
+                                    console.log(selectedPieceRef.current)
+
+                                    selectedPieceRef.current.remove()
+
+                                    // reset()
                                 }
                             })
                         }
